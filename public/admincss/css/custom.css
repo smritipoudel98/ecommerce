@@ -1,0 +1,18 @@
+/* your styles go here */
+/* Default state: show brand-big, hide brand-sm */
+
+.brand-sm {
+    display: none;
+}
+
+.brand-sm.visible {
+    display: inline-block;
+}
+
+.brand-big {
+    display: inline-block;
+}
+
+.brand-big:not(.visible) {
+    display: none;
+}
