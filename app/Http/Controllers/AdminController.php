@@ -87,6 +87,17 @@ public function upload_product(Request $request){
     $product=Product::paginate(3);
     return view('admin.view_product',compact('product'));
  }
+
+ public function delete_product($id){
+    $product = Product::findOrFail($id);
+    $product->delete();
+
+    return redirect('/view_product')->with([
+        'message' => 'Product deleted successfully!',
+        'alert-type' => 'success'
+    ]);
+}
+
     public function admin_home()
 {
     return view('admin.index');

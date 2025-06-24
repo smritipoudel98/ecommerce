@@ -31,6 +31,7 @@
       </head>
 
   <body>
+
   @include('admin.header')
 
 @include('admin.sidebar')
@@ -46,6 +47,7 @@
                         <th>Product Price</th>
                         <th>Product Quantity</th>
                         <th>Product Image</th>
+                        <th>Delete</th>
                     </tr>
                     @foreach($product as $products)
                     <tr>
@@ -55,7 +57,15 @@
                        <td>{{$products->category}}</td>
                        <td>{{$products->quantity}}</td>
                        <td><img height="100" width="100" src="products/{{$products->image}}" alt="{{$products->title}}" style="width: 100px; height: 100px;"></td>
-                    </tr>
+                       <td>
+                        <form id="delete-form-{{ $products->id }}" action="{{ url('delete_product', $products->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $products->id }})">Delete</button>
+                        </form>
+                        
+                      </td>
+           </tr>
                    @endforeach
                 </table>
             </div>
@@ -68,7 +78,41 @@
       </div>
     </div>
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+       <!-- JavaScript files -->
+    
+       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+       @if(session('message'))
+       <script>
+         Swal.fire({
+           toast: true,
+           position: 'top-end',
+           icon: '{{ session('alert-type', 'info') }}', // default to 'info'
+           title: @json(session('message')),
+           showConfirmButton: false,
+           timer: 3000
+         });
+       </script>
+       @endif
+       <script>
+        function confirmDelete(productId) {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.getElementById('delete-form-' + productId).submit();
+            }
+          });
+        }
+      </script>
+      
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+     @include('admin.js')
   </body>
 </html>
