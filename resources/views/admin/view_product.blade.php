@@ -24,8 +24,10 @@
         td{
             border:1px solid skyblue;
             text-align: center;
+            color: white;
         }
-    </style>    
+    </style>  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">  
       </head>
 
   <body>
@@ -45,22 +47,28 @@
                         <th>Product Quantity</th>
                         <th>Product Image</th>
                     </tr>
-                    @foreach($product as $product)
+                    @foreach($product as $products)
                     <tr>
-                       <td>{{$product->title}}</td>
-                       <td>{{$product->description}}</td>
-                       <td>{{$product->price}}</td>
-                       <td>{{$product->category}}</td>
-                       <td>{{$product->quantity}}</td>
-                       <td><img height="100" width="100" src="products/{{$product->image}}" alt="{{$product->title}}" style="width: 100px; height: 100px;"></td>
+                       <td>{{$products->title}}</td>
+                       <td>{!! Str::limit($products->description,50) !!}</td>
+                       <td>{{$products->price}}</td>
+                       <td>{{$products->category}}</td>
+                       <td>{{$products->quantity}}</td>
+                       <td><img height="100" width="100" src="products/{{$products->image}}" alt="{{$products->title}}" style="width: 100px; height: 100px;"></td>
                     </tr>
                    @endforeach
                 </table>
             </div>
+            <div class="div_deg">
+                {{ $product->onEachSide(1)->links() }}
+            </div>
+            
           </div>
         </div>
       </div>
     </div>
       </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
   </body>
 </html>
