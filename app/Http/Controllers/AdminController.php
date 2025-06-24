@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 
 class AdminController extends Controller
 {
@@ -53,7 +54,32 @@ public function update_category(Request $request, $id) {
 }
 
 public function add_product(){
-    return view('admin.add_product');
+   
+     $category=Category::all();
+
+    return view('admin.add_product',compact('category'));
+}
+public function upload_product(Request $request){
+    $category=new Product;
+    $category->title = $request->title;
+    $category->description = $request->description;
+    $category->price = $request->price;
+    $category->quantity = $request->qty;
+    $category->category = $request->category;
+    $image=$request->images;
+    // get images from blade
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $image_name = time() . rand(1, 999) . '.' . $image->getClientOriginalExtension();
+            $image->move('products', $image_name);
+                //move "products"->automatically created in public folder.
+            // You can store each image name in DB, or just store the first one
+            $category->image = $image_name; // or save to array
+        }
+    }
+    
+    $category->save();
+   return redirect()->back()->with('success', 'Product Added successfully!');;
 }
 
     public function admin_home()

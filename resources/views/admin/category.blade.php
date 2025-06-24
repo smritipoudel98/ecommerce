@@ -12,7 +12,7 @@
          border-radius: 8px;
       }
       input[type="text"] {
-         color: black;
+         color:gray;
          display: flex;
          align-items: center;
          text-align: center;
@@ -55,6 +55,7 @@
   </head>
 
   <body>
+    {{-- alert for the success on top of the header --}}
     @if (session('success'))
     <div id="success-alert" class="alert alert-{{ session('alert-type', 'success') }} alert-dismissible fade show" role="alert">
       <strong>{{ session('success') }}</strong> 
@@ -72,6 +73,18 @@
       }, 5000);
   </script>
   @endif
+
+  {{-- form validation error --}}
+  @if ($errors->any())
+  <div class="alert alert-danger" style="margin: 20px;">
+      <ul>
+          @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+          @endforeach
+      </ul>
+  </div>
+@endif
+
     @include('admin.header')
     @include('admin.sidebar')
 
