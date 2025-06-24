@@ -82,6 +82,11 @@ public function upload_product(Request $request){
    return redirect()->back()->with('success', 'Product Added successfully!');;
 }
 
+ public function view_product(){
+
+    $product=Product::all();
+    return view('admin.view_product',compact('product'));
+ }
     public function admin_home()
 {
     return view('admin.index');

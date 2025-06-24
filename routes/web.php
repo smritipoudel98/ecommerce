@@ -47,4 +47,7 @@ middleware(['auth', 'admin']);
 Route::post('upload_product',[AdminController::class,'upload_product'])->
 middleware(['auth', 'admin']);
 
+Route::get('view_product',[AdminController::class,'view_product'])->
+middleware(['auth', 'admin']);
+
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');

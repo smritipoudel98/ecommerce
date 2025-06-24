@@ -53,24 +53,29 @@
         cursor: pointer;
       }
     </style> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   </head>
 
   <body>
     @if(session('success'))
-      <div id="success-alert" class="alert alert-{{ session('alert-type', 'success') }} alert-dismissible fade show" role="alert">
-        <strong>{{ session('success') }}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <script>
-        setTimeout(function () {
-          var alertEl = document.getElementById('success-alert');
-          if (alertEl) {
-            var alert = bootstrap.Alert.getOrCreateInstance(alertEl);
-            alert.close();
-          }
-        }, 5000);
-      </script>
-    @endif
+    <div id="success-alert" class="alert alert-success alert-dismissible fade show mt-3 mx-3"
+         role="alert" data-bs-theme="dark">
+      <strong>{{ session('success') }}</strong>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  
+    <script>
+      setTimeout(function () {
+        var alertEl = document.getElementById('success-alert');
+        if (alertEl) {
+          var alert = bootstrap.Alert.getOrCreateInstance(alertEl);
+          alert.close();
+        }
+      }, 5000);
+    </script>
+  @endif
+  
 
     @include('admin.header')
     @include('admin.sidebar')
