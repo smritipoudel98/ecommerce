@@ -90,6 +90,12 @@ public function upload_product(Request $request){
 
  public function delete_product($id){
     $product = Product::findOrFail($id);
+    // images stored in public/products folder,then delete it as well $product->image($product=variable,image=column name of table products in DB)
+    $image_path = public_path('products/' . $product->image);
+    if (file_exists($image_path)) {
+        unlink($image_path); // delete the image file
+    //unlink() is used to delete a file from the server.
+    }
     $product->delete();
 
     return redirect('/view_product')->with([
@@ -98,7 +104,30 @@ public function upload_product(Request $request){
     ]);
 }
 
-    public function admin_home()
+public function update_product($id){
+    $product=Product::find($id);
+    return view('admin.update_page', compact('product'));
+}
+public function edit_product(Request $request, $id){
+    $product = Product::find($id);
+    $product->title = $request->title;
+    $product->description = $request->description;
+    $product->price = $request->price;
+    $product->quantity = $request->quantity;
+    $product->category = $request->category;
+    $image = $request->image;
+    if($image) {
+        $image_name=time().rand(1,999).'.'.$image->getClientOriginalExtension();
+        //This moves the uploaded image to the public/products/ directory.
+        $image->move('products', $image_name);
+        $product->image = $image_name;
+        //$product->image , this image from database.
+        
+    }
+    $product->save();
+    return redirect('/view_product')->with('success', 'Product updated successfully!');
+}
+public function admin_home()
 {
     return view('admin.index');
 }

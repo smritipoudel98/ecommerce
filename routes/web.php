@@ -53,4 +53,10 @@ middleware(['auth', 'admin']);
 Route::delete('delete_product/{id}',[AdminController::class,'delete_product'])->
 middleware(['auth', 'admin']);
 
+Route::get('update_product/{id}',[AdminController::class,'update_product'])->
+middleware(['auth', 'admin']);
+
+Route::post('edit_product/{id}',[AdminController::class,'edit_product'])->
+middleware(['auth', 'admin']);
+
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');

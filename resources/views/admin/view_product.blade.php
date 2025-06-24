@@ -31,6 +31,26 @@
       </head>
 
   <body>
+    @if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+    {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<script>
+    // Auto-close after 5 seconds
+    setTimeout(function () {
+        const alert = document.getElementById('success-alert');
+        if (alert) {
+            // Bootstrap 4 uses jQuery’s .alert('close') method
+            $(alert).alert('close');
+        }
+    }, 5000);
+</script>
+@endif
+
 
   @include('admin.header')
 
@@ -47,6 +67,7 @@
                         <th>Product Price</th>
                         <th>Product Quantity</th>
                         <th>Product Image</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                     @foreach($product as $products)
@@ -58,12 +79,16 @@
                        <td>{{$products->quantity}}</td>
                        <td><img height="100" width="100" src="products/{{$products->image}}" alt="{{$products->title}}" style="width: 100px; height: 100px;"></td>
                        <td>
+                        <a href="{{ url('update_product', $products->id) }}" class="btn btn-success">Edit</a>
+                       </td>
+                       
+                       <td>
                         <form id="delete-form-{{ $products->id }}" action="{{ url('delete_product', $products->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $products->id }})">Delete</button>
                         </form>
-                        
+         
                       </td>
            </tr>
                    @endforeach
@@ -79,15 +104,20 @@
     </div>
       </div>
        <!-- JavaScript files -->
-    
+    <!-- Add jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
        @if(session('message'))
        <script>
+        //  Calls the SweetAlert2 library's fire() method to create a toast (popup alert).
          Swal.fire({
+            //"Make this a toast notification" (a small popup at the corner) instead of a full modal.
            toast: true,
            position: 'top-end',
            icon: '{{ session('alert-type', 'info') }}', // default to 'info'
+           //This sets the text/title of the popup message using the value stored in Laravel’s session.
            title: @json(session('message')),
            showConfirmButton: false,
            timer: 3000
