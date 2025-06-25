@@ -58,6 +58,11 @@
       <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
+            <form action="{{ url('product_search') }}" method="get" >
+              <input type="search" name="search" placeholder="Search for products..." class="form-control" style="width: 300px; height: 50px; display: inline-block; margin-right: 5px;">
+              <button type="submit" class="btn btn-secondary" value="Search" style="display: inline-block; margin-left: 5px;">Search</button>
+            </form>
+
             <div class="div_deg">
                 <table class="table_deg">
                     <tr>
@@ -74,8 +79,8 @@
                     <tr>
                        <td>{{$products->title}}</td>
                        <td>{!! Str::limit($products->description,50) !!}</td>
-                       <td>{{$products->price}}</td>
                        <td>{{$products->category}}</td>
+                       <td>{{$products->price}}</td>
                        <td>{{$products->quantity}}</td>
                        <td><img height="100" width="100" src="products/{{$products->image}}" alt="{{$products->title}}" style="width: 100px; height: 100px;"></td>
                        <td>

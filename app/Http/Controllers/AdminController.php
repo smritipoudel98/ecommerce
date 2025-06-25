@@ -106,7 +106,9 @@ public function upload_product(Request $request){
 
 public function update_product($id){
     $product=Product::find($id);
-    return view('admin.update_page', compact('product'));
+    $categories = Category::all();
+
+    return view('admin.update_page', compact('product', 'categories'));
 }
 public function edit_product(Request $request, $id){
     $product = Product::find($id);
@@ -127,6 +129,14 @@ public function edit_product(Request $request, $id){
     $product->save();
     return redirect('/view_product')->with('success', 'Product updated successfully!');
 }
+
+public function product_search(Request $request){
+    $search_text=$request->search;
+    $product=Product::where('title','LIKE','%'.$search_text.'%')
+    ->orWhere('category','LIKE','%'.$search_text.'%')->paginate(3);
+    return view('admin.view_product',compact('product'));
+}
+
 public function admin_home()
 {
     return view('admin.index');
