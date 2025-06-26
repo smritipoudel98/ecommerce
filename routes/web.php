@@ -74,4 +74,7 @@ middleware(['auth','verified']);
 Route::get('remove_cart/{id}',[HomeController::class,'remove_cart'])->
 middleware(['auth','verified']);
 
+Route::post('confirm_order',[HomeController::class,'confirm_order'])->
+middleware(['auth','verified']);
+
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');

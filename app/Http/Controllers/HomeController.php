@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Cart;
+use App\Models\Order;
 
 class HomeController extends Controller
 {
@@ -83,5 +84,31 @@ public function remove_cart($id)
     
     Cart::where('id', $id)->delete();
     return redirect()->back()->with('success', 'Product removed from cart!');
+}
+public function confirm_order(Request $request){
+  $name=$request->name;
+  $address=$request->address;
+  $phone=$request->phone;
+  $userid=Auth::user()->id;
+  $cart=Cart::where('user_id',$userid)->get();
+  foreach($cart as $carts){
+
+    $order=new Order;
+    $order->name=$name;
+    $order->rec_address=$address;
+    $order->phone=$phone;
+    $order->user_id=$userid;
+    $order->product_id=$carts->product_id;
+    $order->save();
+  }
+  $cart_remove=Cart::where('user_id',$userid)->get();
+  foreach($cart_remove as $cart_remove){
+    $data=Cart::find($cart_remove->id);
+    $data->delete();
+  }
+  // Clear the cart after placing the order
+  return redirect()->back()->with('success', 'Order placed successfully!');
+
+  
 }
 }

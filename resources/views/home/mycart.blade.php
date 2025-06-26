@@ -33,6 +33,35 @@
             font-size: 20px;
             padding: 20px;
         }
+        .order_deg{
+            padding-right: 150px;
+            margin-bottom: 290px;
+        }
+        .cart_table{
+            width: 55%;
+        }
+        input[type="text"], textarea {
+            flex:1;
+            display: inline-block;
+            width: 50%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;       /* Make text smaller */
+            font-weight: normal; 
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .div-gap {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+        }
     </style>
 </head>
 
@@ -63,6 +92,31 @@
   </div>
 
     <div class="div_deg">
+        <div class="order_deg">
+            <form action="{{ url('confirm_order') }}" method="POST">
+                @csrf
+               
+                <div class="div-gap">
+                    <label>Receiver Name:</label>
+                    <input type="text" name="name" value="{{ Auth::user()->name }}" required>
+                </div>
+                <div class="div-gap">
+                    <label>Receiver Address:</label>
+                    {{-- <textarea> does not use the value attribute. Instead, the value/content of a <textarea> should be placed between the opening and closing tags. --}}
+                    <textarea name="address"  required>{{ Auth::user()->address }}</textarea>
+                </div>
+                <div class="div-gap">
+                    <label>Receiver Phone Number:</label>
+                    <input type="text" name="phone" value="{{ Auth::user()->phone }}" required>
+                </div>
+                <div></div>
+                <div class="div-gap">
+                    <input type="submit" value="Place Order" class="btn btn-success" style="cursor: pointer;">
+                </div>
+            </form>
+        </div>
+         
+    <div class="cart_table">
         <table>
             <tr>
                 <th>Product Title</th>
@@ -89,6 +143,7 @@
             ?>
             @endforeach
         </table>
+    </div>
     </div>
     <div class="cart_value">
         <h3>Total Value of the Cart is: ${{ $value}}</h3>
