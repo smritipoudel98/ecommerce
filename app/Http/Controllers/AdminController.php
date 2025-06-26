@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Order;
 
 class AdminController extends Controller
 {
@@ -142,4 +143,21 @@ public function admin_home()
     return view('admin.index');
 }
 
+public function view_order(){
+    // $order=Product()::where('user_id', auth()->id());
+    $data= Order::all();
+    return view('admin.view_order',compact('data'));
+}
+public function on_the_way($id){
+$data=Order::findorFail($id);
+$data->status = 'on the way';
+$data->save();
+    return redirect('/view_order')->with('success', 'Order status updated to "On the way" successfully!');
+}
+public function delivered($id){
+    $data=Order::findorFail($id);
+    $data->status = 'delivered';
+    $data->save();
+        return redirect('/view_order')->with('success', 'Order status updated to "delivered" successfully!');
+    }
 }

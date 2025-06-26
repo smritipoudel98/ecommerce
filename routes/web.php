@@ -77,4 +77,13 @@ middleware(['auth','verified']);
 Route::post('confirm_order',[HomeController::class,'confirm_order'])->
 middleware(['auth','verified']);
 
+Route::get('view_order',[AdminController::class,'view_order'])->
+middleware(['auth','admin']);
+
+Route::get('on_the_way/{id}',[AdminController::class,'on_the_way'])->
+middleware(['auth','admin']);
+
+Route::get('delivered/{id}',[AdminController::class,'delivered'])->
+middleware(['auth','admin']);
+
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');

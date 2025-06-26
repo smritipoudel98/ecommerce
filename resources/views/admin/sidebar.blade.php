@@ -26,7 +26,7 @@
               
               </ul>
             </li>
-            
+            <li><a href="{{url('view_order')}}"> <i class="icon-grid"></i>Order </a></li>
                  
           
         </nav>
