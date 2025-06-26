@@ -36,9 +36,9 @@
         <div class="user_option" style="gap:20px;">
           @if (Route::has('login'))
           @auth
-          <a href="">
+          <a href="{{ url('mycart') }}">
             <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-            [{{$count}}]
+            [{{$cartCount}}]
           </a>
           <form class="form-inline ">
             <button class="btn nav_search-btn" type="submit">

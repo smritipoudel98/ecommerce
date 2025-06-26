@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Providers;
-use App\Models\Cart;
+
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
 
 class AppServiceProvider extends ServiceProvider
-
 {
     /**
      * Register any application services.
@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        paginator::useBootstrapFive();
+        Paginator::useBootstrapFive();
+
         View::composer('*', function ($view) {
             if (Auth::check()) {
                 $cartCount = Cart::where('user_id', Auth::id())->count();

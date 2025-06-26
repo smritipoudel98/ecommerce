@@ -68,4 +68,10 @@ middleware(['auth','verified']);
 Route::get('add_cart/{id}',[HomeController::class,'add_cart'])->
 middleware(['auth','verified']);
 
+Route::get('mycart',[HomeController::class,'mycart'])->
+middleware(['auth','verified']);
+
+Route::get('remove_cart/{id}',[HomeController::class,'remove_cart'])->
+middleware(['auth','verified']);
+
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');
