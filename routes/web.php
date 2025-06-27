@@ -89,4 +89,7 @@ middleware(['auth','admin']);
 Route::get('print_pdf/{id}',[AdminController::class,'print_pdf'])->
 middleware(['auth','admin']);
 
+Route::get('myorders',[HomeController::class,'myorders'])->
+middleware(['auth','verified']);
+
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');

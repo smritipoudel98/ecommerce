@@ -112,7 +112,11 @@ public function confirm_order(Request $request){
   }
   // Clear the cart after placing the order
   return redirect()->back()->with('success', 'Order placed successfully!');
-
-  
+}
+public function myorders(){
+  $user=Auth::user()->id;
+  $cartCount=Cart::where('user_id',$user)->get()->count();
+  $order=Order::where('user_id',$user)->get();
+  return view('home.order',compact('cartCount','order'));
 }
 }
