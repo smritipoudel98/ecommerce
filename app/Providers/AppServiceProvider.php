@@ -35,3 +35,11 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
+// AppServiceProvider is a file provided by Laravel that helps you:
+// -Set up things before your app runs
+// -Share data globally (across all pages)
+// -Register services, configuration, or packages
+
+//Factory-Defines how fake data should look for your Models.
+//Seeder-Inserts fake data into the database using factory
+       // -It calls the factory to generate the data and then saves it

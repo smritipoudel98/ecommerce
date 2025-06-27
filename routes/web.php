@@ -7,6 +7,31 @@ use App\Http\Controllers\AdminController;
 Route::get('/', [HomeController::class, 'home']);
 
 
+//email verification
+
+
+
+// Email verification notice (page that tells user to verify email)
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');  // Your verify-email.blade.php
+})->middleware('auth')->name('verification.notice');
+
+// Email verification handler (the link user clicks in email)
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill(); // Mark email as verified
+
+    return redirect('/dashboard'); // Redirect where you want after verification
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// Resend the email verification link
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'verification-link-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+
 Route::get('/dashboard', [HomeController::class, 'login_home']) // ✅ fixed
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -91,5 +116,7 @@ middleware(['auth','admin']);
 
 Route::get('myorders',[HomeController::class,'myorders'])->
 middleware(['auth','verified']);
+
+
 
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');
