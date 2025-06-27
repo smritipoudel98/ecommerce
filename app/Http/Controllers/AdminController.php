@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
@@ -160,4 +161,9 @@ public function delivered($id){
     $data->save();
         return redirect('/view_order')->with('success', 'Order status updated to "delivered" successfully!');
     }
+public function print_pdf($id){
+    $data = Order::find($id);
+    $pdf = Pdf::loadView('admin.invoice',compact('data'));
+    return $pdf->download('invoice.pdf');
+}
 }

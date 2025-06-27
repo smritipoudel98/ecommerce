@@ -42,9 +42,9 @@
         margin: 0 auto;
       }
       .status {
-        padding: 6px 12px;
+        display: inline-block;
         border-radius: 20px;
-        font-weight: 500;
+        font-weight: 50;
         text-transform: capitalize;
       }
       .status-pending {
@@ -106,6 +106,7 @@
                   <th>Image</th>
                   <th>Status</th>
                   <th>Change Status</th>
+                  <th>Print PDF</th>
                 </tr>
               </thead>
               <tbody>
@@ -128,10 +129,12 @@
                     <span style="color:rgb(89, 0, 255);">{{ $order->status }}</span>
                     @endif
                   </td>
-                  <td>
+                  <td style="white-space: nowrap;">
+                    {{-- white-space: nowrap;: Prevents the buttons from wrapping to the next line. --}}
                     <a class="btn btn-primary" href="{{ url('on_the_way/'.$order->id) }}">On the way</a>
                     <a class="btn btn-success" href="{{ url('delivered/'.$order->id) }}">Delivered</a>
                   </td>
+                  <td><a class="btn btn-secondary" href="{{url('print_pdf',$order->id)}}">Print Pdf</a></td>
                 </tr>
                 @endforeach
               </tbody>
