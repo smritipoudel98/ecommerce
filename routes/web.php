@@ -9,8 +9,8 @@ use App\Http\Controllers\StripePaymentController;
 Route::get('/', [HomeController::class, 'home']);
 
 
-Route::get('/stripe', [StripePaymentController::class, 'stripe'])->name('stripe.form');
-Route::post('/stripe', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
+Route::get('/stripe/{value}', [StripePaymentController::class, 'stripe'])->name('stripe.form');
+Route::post('/stripe/{value}', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
 
 
 //email verification

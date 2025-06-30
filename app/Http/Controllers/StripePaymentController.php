@@ -9,17 +9,17 @@ use Illuminate\Http\Request;
 use Stripe;
 class StripePaymentController extends Controller
 {
-    public function stripe()
+    public function stripe($value)
     {
-        return view('home.stripe'); // Your stripe form view
+        return view('home.stripe',compact('value')); // Your stripe form view
     }
- public function stripePost(Request $request)
+ public function stripePost(Request $request,$value)
 {
     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
     try {
         $charge = \Stripe\Charge::create([
-            "amount" => 10000,
+            "amount" => $value*100,
             "currency" => "usd",
             "source" => $request->stripeToken,
             "description" => "Test payment from Laravel app",
@@ -28,6 +28,11 @@ class StripePaymentController extends Controller
                 "email" => $request->email ?? 'no@email.com',
             ]
         ]);
+        $name=Auth::user()->name;
+        $email=Auth::user()->email;
+        $address=Auth::user()->address;
+        $phone=Auth::user()->phone;
+
 
         $cartItems = Cart::where('user_id', Auth::id())->get();
         if ($cartItems->isEmpty()) {
@@ -52,7 +57,8 @@ class StripePaymentController extends Controller
 
         Cart::where('user_id', Auth::id())->delete();
 
-        return back()->with('success', 'Payment successful!');
+        return redirect('/mycart')->with('success', 'Payment successful!');
+
     } catch (\Exception $e) {
         return back()->with('error', 'Error: ' . $e->getMessage());
     }
