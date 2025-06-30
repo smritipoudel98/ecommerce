@@ -4,7 +4,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StripePaymentController;
+
 Route::get('/', [HomeController::class, 'home']);
+
+
+Route::get('/stripe', [StripePaymentController::class, 'stripe'])->name('stripe.form');
+Route::post('/stripe', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
 
 
 //email verification
@@ -116,6 +122,8 @@ middleware(['auth','admin']);
 
 Route::get('myorders',[HomeController::class,'myorders'])->
 middleware(['auth','verified']);
+
+
 
 
 

@@ -35,6 +35,8 @@
     <!-- end slider section -->
   </div>
   <!-- end hero area -->
+<!-- Stripe Payment Form -->
+
 
   <!-- shop section -->
 
@@ -50,6 +52,7 @@
 
   <!-- info section -->
 
+  
 
 
 </body>

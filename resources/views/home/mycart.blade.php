@@ -61,6 +61,7 @@
             display: flex;
             align-items: center;
             padding: 5px;
+            gap: 1rem;
         }
     </style>
 </head>
@@ -111,7 +112,9 @@
                 </div>
                 <div></div>
                 <div class="div-gap">
-                    <input type="submit" value="Place Order" class="btn btn-success" style="cursor: pointer;">
+                    <input type="submit" value="Cash On Delivery" class="btn btn-primary me-5" style="cursor: pointer;">
+                    
+                    <a class="btn btn-success" href="{{ url('stripe') }}">Pay using Card</a>
                 </div>
             </form>
         </div>

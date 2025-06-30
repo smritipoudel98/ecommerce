@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Order;
+use Session;
+use Stripe;
 
 class HomeController extends Controller
 {
@@ -111,7 +113,7 @@ public function confirm_order(Request $request){
     $data->delete();
   }
   // Clear the cart after placing the order
-  return redirect()->back()->with('success', 'Order placed successfully!');
+  return redirect()->back()->with('success', 'Order placed successfully with Cash On Delivery!');
 }
 public function myorders(){
   $user=Auth::user()->id;
@@ -119,4 +121,40 @@ public function myorders(){
   $order=Order::where('user_id',$user)->get();
   return view('home.order',compact('cartCount','order'));
 }
+public function stripe()
+
+{
+    return view('home.stripe');
+}
+
+public function stripePost(Request $request)
+
+{
+
+    Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+
+
+    Stripe\Charge::create ([
+
+            "amount" => 100 * 100,
+
+            "currency" => "usd",
+
+            "source" => $request->stripeToken,
+
+            "description" => "Test payment." 
+
+    ]);
+
+  
+
+    Session::flash('success', 'Payment successful!');
+
+          
+
+    return back();
+
+}
+
 }
