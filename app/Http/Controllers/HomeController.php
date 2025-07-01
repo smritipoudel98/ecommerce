@@ -122,4 +122,18 @@ public function myorders(){
   return view('home.order',compact('cartCount','order'));
 }
 
+public function shop()
+  {
+    $product=Product::all();
+    if(Auth::id()){
+      $user=Auth::user();
+      $userid=$user->id;
+      $count=Cart::where('user_id',$userid)->count();
+    }else{
+      $count='';
+    }
+   
+    return view('home.shop',compact('product','count'));
+  }
+
 }

@@ -29,10 +29,8 @@
     <!-- header section strats -->
     @include('home.header')
     <!-- end header section -->
-    <!-- slider section -->
-@include('home.slider')
 
-    <!-- end slider section -->
+
   </div>
   <!-- end hero area -->
 <!-- Stripe Payment Form -->
@@ -45,9 +43,6 @@
 
 
 
-@include('home.footer')
-
-  <!-- info section -->
 
   
 

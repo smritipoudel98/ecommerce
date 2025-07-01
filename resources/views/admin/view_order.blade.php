@@ -104,6 +104,7 @@
                   <th>Product</th>
                   <th>Price</th>
                   <th>Image</th>
+                  <th>Payment Status</th>
                   <th>Status</th>
                   <th>Change Status</th>
                   <th>Print PDF</th>
@@ -120,6 +121,7 @@
                   <td>
                     <img class="product-image" src="products/{{ $order->product->image }}" alt="{{ $order->product->title }}">
                   </td>
+                  <td>{{$order->payment_status}}</td>
                   <td>
                     @if($order->status == 'progress')
                     <span style="color: rgb(169, 11, 24);">{{ $order->status }}</span>

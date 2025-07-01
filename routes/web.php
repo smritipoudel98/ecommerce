@@ -96,6 +96,9 @@ middleware(['auth', 'admin']);
 Route::get('product_details/{id}',[HomeController::class,'product_details'])->
 middleware(['auth','verified']);
 
+Route::get('shop',[HomeController::class,'shop'])->
+middleware(['auth','verified']);
+
 Route::get('add_cart/{id}',[HomeController::class,'add_cart'])->
 middleware(['auth','verified']);
 

@@ -23,6 +23,12 @@
     <!-- header section strats -->
     @include('home.header')
     <!-- end header section -->
+<!-- Add this just below @include('home.header') -->
+@if(session('success'))
+    <div class="alert alert-success text-center" style="width: 50%; margin: 20px auto;">
+        {{ session('success') }}
+    </div>
+@endif
 
  <!-- product details starts here. -->
  <section class="shop_section layout_padding">
@@ -61,6 +67,11 @@
               </div>
           </div>
           
+          <div class="detail-box">
+            <a class="btn btn-primary"href="{{url('add_cart',$data->id)}}">Add to Cart</a>
+
+          </div>
+      </div>
       
     </div>
   </section>
@@ -70,6 +81,16 @@
 
   <!-- info section -->
 
+  <script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 3000); // hides after 3 seconds
+</script>
 
 
 </body>
