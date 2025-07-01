@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\ContactController;
 Route::get('/', [HomeController::class, 'home']);
 
 
@@ -129,7 +130,8 @@ middleware(['auth','verified']);
 Route::get('why',[HomeController::class,'why']);
 
 
-Route::get('contact',[HomeController::class,'contact']);
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
+Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');

@@ -14,10 +14,13 @@ class TestimonialController extends Controller
             'designation' => 'nullable',
             'message' => 'required',
         ]);
-
+        $designation = $request->input('designation');
+        if (empty(trim($designation))) {
+            $designation = 'Customer';
+        }
         Testimonial::create($request->all());
-
-        return redirect()->back()->with('success', 'Testimonial submitted successfully!');
+        
+        return redirect()->back()->wisth('success', 'Testimonial submitted successfully!');
     }
 
     public function showTestimonials()

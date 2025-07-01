@@ -4,14 +4,27 @@
 <head>
     @include('home.css')
     <style>
-        .form-group{
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             width:50%;
-             padding:10px;
-             margin:20px;
-        }
+        .container.mb-5 form {
+  width: 50%;
+  margin: 0 auto; /* center form */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* spacing between inputs */
+}
+
+.container.mb-5 form input,
+.container.mb-5 form textarea {
+  width: 100%; /* fill form's width */
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.container.mb-5 form button {
+  width: 150px; /* button width */
+  align-self: center; /* center button horizontally */
+  padding: 10px;
+}
+
     </style>
 </head>
 
@@ -56,10 +69,21 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
-      <div class="carousel-inner">
-        @foreach($testimonials as $key => $testimonial)
+      <!-- Testimonial Section -->
+<div id="testimonialCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+  
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      @foreach($testimonials as $key => $testimonial)
+        <li data-target="#testimonialCarousel" data-slide-to="{{ $key }}" class="{{ $key == 0 ? 'active' : '' }}"></li>
+      @endforeach
+    </ol>
+  
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+      @foreach($testimonials as $key => $testimonial)
         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-          <div class="box">
+          <div class="box p-4">
             <div class="client_info">
               <div class="client_name">
                 <h5>{{ $testimonial->name }}</h5>
@@ -70,10 +94,24 @@
             <p>{{ $testimonial->message }}</p>
           </div>
         </div>
-        @endforeach
-      </div>
+      @endforeach
+    </div>
+  
+    <!-- Controls -->
+    <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  
             
-
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+      
 </body>
 
 </html>
