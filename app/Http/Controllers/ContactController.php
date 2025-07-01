@@ -22,9 +22,9 @@ class ContactController extends Controller
             'email' => 'required|email',
             'message' => 'required|string',
         ]);
-
+        $contactData = $request->only('name', 'email', 'message');
         Contact::create($request->only('name', 'email', 'message'));
-
+        Mail::to('psmriti6207@gmail.com')->send(new ContactFormSubmitted($contactData));
         return redirect()->back()->with('success', 'Your message has been sent!');
     }
     public function index()
