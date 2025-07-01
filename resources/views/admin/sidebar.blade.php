@@ -27,7 +27,8 @@
               </ul>
             </li>
             <li><a href="{{url('view_order')}}"> <i class="icon-grid"></i>Order </a></li>
-                 
+            <li><a href="{{ route('admin.contacts') }}" <i class="icon-grid"></i>Contact Messages</a></li>
+ 
           
         </nav>
         <!-- Sidebar Navigation end-->

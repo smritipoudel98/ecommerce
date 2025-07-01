@@ -106,8 +106,8 @@ public function upload_product(Request $request){
     ]);
 }
 
-public function update_product($id){
-    $product=Product::find($id);
+public function update_product($slug){
+    $product=Product::where('slug',$slug)->get()->first();
     $categories = Category::all();
 
     return view('admin.update_page', compact('product', 'categories'));
@@ -165,5 +165,10 @@ public function print_pdf($id){
     $data = Order::find($id);
     $pdf = Pdf::loadView('admin.invoice',compact('data'));
     return $pdf->download('invoice.pdf');
+}
+public function showMessages()
+{
+    $contacts = \App\Models\Contact::latest()->get(); // Get all messages, latest first
+    return view('admin.contacts.index', compact('contacts'));
 }
 }

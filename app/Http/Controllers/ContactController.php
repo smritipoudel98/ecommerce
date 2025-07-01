@@ -11,6 +11,9 @@ class ContactController extends Controller
     {
         return view('home.contact');
     }
+   // ContactController.php
+
+    
 
     public function submitForm(Request $request)
     {
@@ -24,4 +27,10 @@ class ContactController extends Controller
 
         return redirect()->back()->with('success', 'Your message has been sent!');
     }
+    public function index()
+{
+    $contacts = Contact::latest()->get(); // Get all contact messages, newest first
+    return view('admin.contacts.index', compact('contacts'));
+}
+
 }

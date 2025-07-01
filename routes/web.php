@@ -85,7 +85,7 @@ middleware(['auth', 'admin']);
 Route::delete('delete_product/{id}',[AdminController::class,'delete_product'])->
 middleware(['auth', 'admin']);
 
-Route::get('update_product/{id}',[AdminController::class,'update_product'])->
+Route::get('update_product/{slug}',[AdminController::class,'update_product'])->
 middleware(['auth', 'admin']);
 
 Route::post('edit_product/{id}',[AdminController::class,'edit_product'])->
@@ -133,5 +133,6 @@ Route::get('why',[HomeController::class,'why']);
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact.submit');
 
+Route::get('/admin/contacts', [ContactController::class, 'index'])->middleware('auth')->name('admin.contacts');
 
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');
