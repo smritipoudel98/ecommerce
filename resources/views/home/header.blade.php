@@ -20,17 +20,17 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="why.html">
+            <a class="nav-link" href="{{url('why')}}">
               Why Us
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="testimonial.html">
+            <a class="nav-link" href="{{url('testimonial')}}">
               Testimonial
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contact.html">Contact Us</a>
+            <a class="nav-link" href="{{url('contact')}}">Contact Us</a>
           </li>
         </ul>
         <div class="user_option" style="gap:20px;">

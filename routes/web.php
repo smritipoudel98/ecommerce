@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StripePaymentController;
-
+use App\Http\Controllers\TestimonialController;
 Route::get('/', [HomeController::class, 'home']);
 
 
@@ -13,10 +13,10 @@ Route::get('/stripe/{value}', [StripePaymentController::class, 'stripe'])->name(
 Route::post('/stripe/{value}', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
 
 
+Route::post('/testimonial', [TestimonialController::class, 'store'])->name('testimonial.store');
+Route::get('/testimonial', [TestimonialController::class, 'showTestimonials'])->name('testimonial.show');
+
 //email verification
-
-
-
 // Email verification notice (page that tells user to verify email)
 Route::get('/email/verify', function () {
     return view('auth.verify-email');  // Your verify-email.blade.php
@@ -96,8 +96,7 @@ middleware(['auth', 'admin']);
 Route::get('product_details/{id}',[HomeController::class,'product_details'])->
 middleware(['auth','verified']);
 
-Route::get('shop',[HomeController::class,'shop'])->
-middleware(['auth','verified']);
+Route::get('shop',[HomeController::class,'shop']);
 
 Route::get('add_cart/{id}',[HomeController::class,'add_cart'])->
 middleware(['auth','verified']);
@@ -127,7 +126,10 @@ Route::get('myorders',[HomeController::class,'myorders'])->
 middleware(['auth','verified']);
 
 
+Route::get('why',[HomeController::class,'why']);
 
+
+Route::get('contact',[HomeController::class,'contact']);
 
 
 Route::get('/admin_home', [AdminController::class, 'admin_home'])->name('admin.home');
