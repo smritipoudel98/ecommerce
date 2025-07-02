@@ -40,6 +40,11 @@ class AppServiceProvider extends ServiceProvider
 // -Share data globally (across all pages)
 // -Register services, configuration, or packages
 
+//used appserviceprovider for following reasons.
+//"Do I want this logic available across the entire app?"
+
+//"Do I want to change some default behavior of Laravel?"
+
 //Factory-Defines how fake data should look for your Models.
 //Seeder-Inserts fake data into the database using factory
        // -It calls the factory to generate the data and then saves it
