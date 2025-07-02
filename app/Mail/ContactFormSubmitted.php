@@ -33,3 +33,5 @@ class ContactFormSubmitted extends Mailable
                     ->markdown('emails.contact_form_submitted');
     }
 }
+//Send an email with the subject New Contact Form Submission, and 
+// design it using the Markdown view located at emails/contact_form_submitted.blade.php(template for mail ).

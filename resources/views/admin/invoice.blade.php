@@ -11,8 +11,8 @@
        <h3>Customer Name:{{ $data->name }}</h3>
        <h3>Customer Address:{{ $data->rec_address }}</h3>
        <h3>Customer Phone Number:{{ $data->phone }}</h3> 
-       <h2>Product title:{{$data->product->title}}</h2>
-       <h2>Product title:{{$data->product->price}}</h2>
+       <h2>Product Title:{{$data->product->title}}</h2>
+       <h2>Product Price:{{$data->product->price}}</h2>
        <h2><img height="250" width="300" src="products/{{$data->product->image}}"></h2>
     </center>
     

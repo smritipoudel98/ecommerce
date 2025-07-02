@@ -42,7 +42,7 @@ public function edit_category_form($id) {
 public function edit_category(Request $request, $id)
 {
     $category = Category::findOrFail($id);
-    $category->name = $request->input('name');
+    $category->category_name = $request->input('name');
     $category->save();
     return redirect()->back()->with('message', 'Category updated');
 }
