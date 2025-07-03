@@ -11,8 +11,10 @@ class StripePaymentController extends Controller
 {
     public function stripe($value)
     {
-        return view('home.stripe',compact('value')); // Your stripe form view
+        $stripe_key = env('STRIPE_KEY');
+        return view('home.stripe', compact('value', 'stripe_key'));
     }
+    
  public function stripePost(Request $request,$value)
 {
     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));

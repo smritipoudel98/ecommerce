@@ -20,7 +20,7 @@ class TestimonialController extends Controller
         }
         Testimonial::create($request->all());
         
-        return redirect()->back()->wisth('success', 'Testimonial submitted successfully!');
+        return redirect()->back()->with('success', 'Testimonial submitted successfully!');
     }
 
     public function showTestimonials()

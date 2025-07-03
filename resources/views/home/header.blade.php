@@ -1,3 +1,4 @@
+{{-- npm run dev is essential to generate usable frontend files after editing any CSS/JS in resources/. Without it, your changes won't appear on the website. --}}
 <header class="header_section">
     <nav class="navbar navbar-expand-lg custom_nav-container ">
       <a class="navbar-brand" href="index.html">

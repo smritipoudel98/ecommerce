@@ -141,9 +141,8 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+       const stripe = Stripe("{{ $stripe_key }}");
         const elements = stripe.elements();
-
         const card = elements.create("card", {
             style: {
                 base: {
@@ -169,18 +168,19 @@
             event.preventDefault();
 
             stripe.createToken(card).then(function (result) {
-                if (result.error) {
-                    document.getElementById("card-errors").textContent = result.error.message;
-                } else {
-                    const hiddenInput = document.createElement("input");
+    console.log(result);
+    if (result.error) {
+        document.getElementById("card-errors").textContent = result.error.message;
+    } else {
+         const hiddenInput = document.createElement("input");
                     hiddenInput.setAttribute("type", "hidden");
                     hiddenInput.setAttribute("name", "stripeToken");
                     hiddenInput.setAttribute("value", result.token.id);
                     form.appendChild(hiddenInput);
 
                     form.submit();
-                }
-            });
+    }
+});
         });
     </script>
 </body>
