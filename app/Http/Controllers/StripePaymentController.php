@@ -11,15 +11,25 @@ class StripePaymentController extends Controller
 {
     public function stripe($value)
     {
-        $stripe_key = env('STRIPE_KEY');
-        return view('home.stripe', compact('value', 'stripe_key'));
+        $stripeKey = config('services.stripe.key');
+        
+        if (empty($stripeKey)) {
+            abort(500, 'Stripe key is not configured');
+        }
+    
+        return view('home.stripe', [
+            'value' => $value,
+            'stripe_key' => $stripeKey,
+        ]);
     }
+
     
  public function stripePost(Request $request,$value)
 {
-    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    
 
     try {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         $charge = \Stripe\Charge::create([
             "amount" => $value*100,
             "currency" => "usd",

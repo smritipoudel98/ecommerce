@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style>
-        body {
+         body {
             font-family: 'Roboto', sans-serif;
             background: #f6f9fc;
             display: flex;
@@ -24,9 +24,14 @@
             width: 100%;
         }
 
-        h3 {
+        h1, h4 {
             text-align: center;
-            font-weight: 500;
+            margin: 0 0 20px;
+        }
+
+        h4 {
+            color: #666;
+            font-weight: normal;
         }
 
         label {
@@ -46,24 +51,13 @@
             font-size: 15px;
         }
 
-        .StripeElement {
-            box-sizing: border-box;
-            height: 40px;
+        #card-element {
+            width: 100%;
             padding: 10px 12px;
+            margin-bottom: 16px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            background-color: rgb(86, 150, 140);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-            transition: box-shadow 150ms ease;
-            margin-bottom: 16px;
-        }
-
-        .StripeElement--focus {
-            box-shadow: 0 1px 3px 0 #cfd7df;
-        }
-
-        .StripeElement--invalid {
-            border-color: #fa755a;
+            background-color: white;
         }
 
         button {
@@ -82,30 +76,45 @@
             background: #5469d4;
         }
 
+        button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
         #card-errors {
             color: #fa755a;
-            margin-top: -10px;
-            margin-bottom: 10px;
+            margin: -10px 0 15px;
             font-size: 14px;
+            min-height: 18px;
         }
 
         .status-message {
             text-align: center;
             margin-bottom: 16px;
+            padding: 10px;
+            border-radius: 4px;
         }
 
         .status-message.success {
             color: green;
+            background-color: #e6ffe6;
         }
 
         .status-message.error {
             color: red;
+            background-color: #ffebeb;
         }
     </style>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    
-    <form action="{{ route('stripe.post',$value) }}" method="POST" id="payment-form">
+    @if(empty($stripe_key))
+        <div class="status-message error">
+            Stripe key is missing! Check your .env file for STRIPE_KEY
+        </div>
+    @endif
+
+    <form action="{{ route('stripe.post', $value) }}" method="POST" id="payment-form">
         @csrf
 
         @if (session('success'))
@@ -115,8 +124,10 @@
         @if (session('error'))
             <div class="status-message error">{{ session('error') }}</div>
         @endif
+
         <h1>Stripe Payment</h1>
-        <h4>You need to pay ${{$value}}</h4>
+        <h4>You need to pay ${{ number_format($value, 2) }}</h4>
+
         <label for="name">Your Name</label>
         <input type="text" name="name" required>
 
@@ -129,58 +140,78 @@
         <label for="phone">Phone</label>
         <input type="text" name="phone" required>
 
-        <label for="card-element">Card Details</label>
-        <div id="card-element" class="StripeElement">
-            <!-- A Stripe Element will be inserted here. -->
+        <label>Card Details</label>
+        <div id="card-element">
+            <!-- Stripe will insert the card elements here -->
         </div>
-
         <div id="card-errors" role="alert"></div>
 
-        <button type="submit">Pay Now</button>
+        <button type="submit" id="submit-button">Pay Now</button>
     </form>
 
-    <script src="https://js.stripe.com/v3/"></script>
     <script>
-       const stripe = Stripe("{{ $stripe_key }}");
-        const elements = stripe.elements();
-        const card = elements.create("card", {
-            style: {
-                base: {
-                    color: "#32325d",
-                    fontFamily: '"Roboto", sans-serif',
-                    fontSmoothing: "antialiased",
-                    fontSize: "16px",
-                    "::placeholder": {
-                        color: "#aab7c4"
-                    }
-                },
-                invalid: {
-                    color: "#fa755a",
-                    iconColor: "#fa755a"
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Debug output
+            console.log("Stripe Key:", "{{ $stripe_key }}");
+            
+            if (!"{{ $stripe_key }}") {
+                document.getElementById('card-errors').textContent = 
+                    'Payment system not configured. Please try again later.';
+                document.getElementById('submit-button').disabled = true;
+                return;
             }
-        });
 
-        card.mount("#card-element");
+            const stripe = Stripe("{{ $stripe_key }}");
+            const elements = stripe.elements();
+            
+            const card = elements.create('card', {
+                style: {
+                    base: {
+                        color: '#32325d',
+                        fontFamily: '"Roboto", sans-serif',
+                        fontSize: '16px',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '#fa755a',
+                        iconColor: '#fa755a'
+                    }
+                }
+            });
 
-        const form = document.getElementById("payment-form");
-        form.addEventListener("submit", function (event) {
-            event.preventDefault();
+            card.mount('#card-element');
 
-            stripe.createToken(card).then(function (result) {
-    console.log(result);
-    if (result.error) {
-        document.getElementById("card-errors").textContent = result.error.message;
-    } else {
-         const hiddenInput = document.createElement("input");
-                    hiddenInput.setAttribute("type", "hidden");
-                    hiddenInput.setAttribute("name", "stripeToken");
-                    hiddenInput.setAttribute("value", result.token.id);
+            card.addEventListener('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                displayError.textContent = event.error ? event.error.message : '';
+            });
+
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                const submitButton = document.getElementById('submit-button');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Processing...';
+
+                const {token, error} = await stripe.createToken(card);
+
+                if (error) {
+                    document.getElementById('card-errors').textContent = error.message;
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Pay Now';
+                } else {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.setAttribute('type', 'hidden');
+                    hiddenInput.setAttribute('name', 'stripeToken');
+                    hiddenInput.setAttribute('value', token.id);
                     form.appendChild(hiddenInput);
-
+                    
                     form.submit();
-    }
-});
+                }
+            });
         });
     </script>
 </body>
