@@ -16,7 +16,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     git \
-    npm
+    npm \
+    netcat-openbsd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
  
     #apt-get update= Updates the list of available packages in the system.
     # apt-get install -y \build-essential \=(y=yes) (build-essential=Build certain PHP extensions (like pdo_mysql, gd(graphics), etc.))
@@ -39,9 +42,32 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
     # - `pcntl` – useful for queue workers.[Lets PHP handle system signals/processes]
   
 
-RUN pecl install redis && docker-php-ext-enable redis
+# Install Redis
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
 # pecl install redis =downloads and installs the Redis extension for PHP.
 #docker-php-ext-enable redis= This command enables the Redis extension in PHP.
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# This copies the Composer binary (composer) from the official Composer image into your container.
+# So now your container can use Composer without you having to install it manually. 
+
+WORKDIR /var/www
+# This sets the working directory inside the Docker container to /var/www.
+# All the next commands in the Dockerfile will run inside this directory.
+
+# Copy composer files first
+COPY composer.json composer.lock ./
+
+# Install dependencies
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
+
+# Copy application
+COPY . .
+
+# Run post-install scripts
+RUN composer run post-autoload-dump
 
 COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 # 📥 This copies your script file entrypoint.sh
@@ -52,13 +78,10 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # 🛠️ This makes the script executable.(giving permission to run the file.)
 # Without this, the script is just a text file and cannot be run. 
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-# This tells Docker:  “When the container starts, run this script.”
+
 
   ### ```Dockerfile
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-# This copies the Composer binary (composer) from the official Composer image into your container.
-# So now your container can use Composer without you having to install it manually.  
+ 
 
 COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/php.ini
 # Take your custom php.ini file from your local folder (docker/php/php.ini) and place it inside the container at the path where PHP expects to find configuration files.
@@ -69,9 +92,22 @@ COPY ./docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 # COPY .env.docker .env
 # Copies the file named .env.docker from your local project folder (where you run Docker build) into the Docker image’s filesystem as a file named .env inside the container
 
-WORKDIR /var/www
-# This sets the working directory inside the Docker container to /var/www.
-# All the next commands in the Dockerfile will run inside this directory.
+
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/storage \
+    && chown -R www-data:www-data /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage \
+    && chmod -R 775 /var/www/bootstrap/cache
+
+    EXPOSE 9000
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# This tells Docker:  “When the container starts, run this script.”
+
+
+CMD ["php-fpm"]
+
 
 
 # 🔹 Dockerfile
