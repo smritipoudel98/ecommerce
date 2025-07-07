@@ -1,6 +1,6 @@
 #### docker/nginx/conf.d/smriti.conf::
 
-# Differnces:::
+# Differences:::
 
 Previously, I've have mentioned access_log and error_log. Without logging, you won't get useful debug info in case of errors like 502, 404, etc.
 So, I included logs here for proper debugging.
