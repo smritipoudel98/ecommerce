@@ -26,7 +26,7 @@ Version 2(docker) needs external config (like www.conf) — if that file is miss
 daemonize :[yes means outside Docker container (traditional hosting)
 no means inside Docker container (like in your Laravel Docker setup)]
 listen:9000 ( Same container (PHP + Nginx setup))
-listen:9000 ( Multi-container Docker (Nginx + PHP-FPM separate))
+listen:0.0.0.0.9000 ( Multi-container Docker (Nginx + PHP-FPM separate))
 
 #### entrypoint.sh
 
